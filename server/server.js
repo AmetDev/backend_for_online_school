@@ -11,18 +11,14 @@ import cron from 'node-cron'
 import path from 'path'
 import Image from './models/Image.js'
 import pdfModel from './models/PdfFile.js'
-import dormitoryRouter from './routes/DormitoryRoutes.js'
-import LinkHeader from './routes/LinkHeader.js'
 import mailer from './routes/MailerRoutes.js'
 import pageRouter from './routes/PageRoutes.js'
-import postRouter from './routes/PostRoutes.js'
-import SaveFilesRouter from './routes/SaveFilesRoutes.js'
-import scheduleRouter from './routes/ScheduleRoutes.js'
-import specialityRouter from './routes/SpecialtiesRoutes.js'
-import userRouter from './routes/UserRoutes.js'
 
+import routerParent from './routes/ParentRouter.js'
+import StudentRouter from './routes/StudentRouter.js'
+import TeacherRouter from './routes/TeacherRouter.js'
 import checkAuth from './utils/checkAuth.js'
-import checkUserIsAdmin from './utils/checkUserIsAdmin.js'
+
 dotenv.config({ path: './.env' })
 const app = express()
 
@@ -66,7 +62,7 @@ app.get('/', (req, res) => {
 app.post(
 	'/uploadpdf',
 	checkAuth,
-	checkUserIsAdmin,
+
 	upload.single('file'),
 	async (req, res) => {
 		try {
@@ -96,7 +92,7 @@ app.post(
 app.post(
 	'/upload',
 	checkAuth,
-	checkUserIsAdmin,
+
 	upload.single('image'),
 	async (req, res) => {
 		try {
@@ -123,15 +119,12 @@ app.post(
 // Set up static file serving for uploaded images
 app.use('/uploads', express.static('uploads'))
 /* ROUTES */
-app.use('/auth', userRouter)
-app.use('/speciality', specialityRouter)
-app.use('/post', postRouter)
-app.use('/dormitory', dormitoryRouter)
+app.use('/auth_parent', routerParent)
+app.use('/auth_student', StudentRouter)
+app.use('/auth_teacher', TeacherRouter)
+
 app.use('/page', pageRouter)
 app.use('/mailer', mailer)
-app.use('/schedule', scheduleRouter)
-app.use('/linker', LinkHeader)
-app.use('/files', SaveFilesRouter)
 
 const client = new MongoClient(MONGO_URI, {
 	useNewUrlParser: true,

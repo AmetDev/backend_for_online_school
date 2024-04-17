@@ -1,21 +1,16 @@
 import bcrypt from 'bcrypt'
 import dotenv from 'dotenv'
-import { validationResult } from 'express-validator'
 import jwt from 'jsonwebtoken'
-import UserModel from '../models/User.js'
+import Teacher from '../models/Teacher.js'
 dotenv.config()
 
 const SECRET = process.env.SECRET
 
-export const createUser = async (req, res) => {
+export const createTeacher = async (req, res) => {
 	try {
 		console.log(req.body)
-		const errors = validationResult(req)
 
-		if (!errors.isEmpty()) {
-			return res.status(400).json({ message: errors.array() })
-		}
-		const userEmail = await UserModel.findOne({ email: req.body.email })
+		const userEmail = await Teacher.findOne({ email: req.body.email })
 		if (userEmail) {
 			return res
 				.status(400)
@@ -29,12 +24,13 @@ export const createUser = async (req, res) => {
 
 		const hashPassword = await bcrypt.hash(password, salt)
 
-		const doc = new UserModel({
-			firstName: req.body.firstName,
-			lastName: req.body.lastName,
-			fatherName: req.body.fatherName,
+		const doc = new Teacher({
+			fullName: req.body.fullName,
 			email: req.body.email,
+			gender: req.body.gender,
 			password: hashPassword,
+			gender: req.body.gender,
+			dateBirth: req.body.dateBirth,
 		})
 
 		const user = await doc.save()
@@ -58,13 +54,13 @@ export const createUser = async (req, res) => {
 	}
 }
 
-export const loginUser = async (req, res) => {
+export const loginTeacher = async (req, res) => {
 	try {
-		const errors = validationResult(req)
-		if (!errors.isEmpty()) {
-			return res.status(400).json({ message: errors.array() })
-		}
-		const user = await UserModel.findOne({ email: req.body.email })
+		// const errors = validationResult(req)
+		// if (!errors.isEmpty()) {
+		// 	return res.status(400).json({ message: errors.array() })
+		// }
+		const user = await Teacher.findOne({ email: req.body.email })
 
 		if (!user) {
 			return res.status(400).json({ message: 'Неправильный логин или пароль' })
@@ -93,9 +89,9 @@ export const loginUser = async (req, res) => {
 	}
 }
 
-export const getUser = async (req, res) => {
+export const getTeacher = async (req, res) => {
 	try {
-		const user = await UserModel.findById(req.userId)
+		const user = await Teacher.findById(req.userId)
 		if (!user) {
 			return res.status(404).send({
 				message: 'Пользователь не найден',

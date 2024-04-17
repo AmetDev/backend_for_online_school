@@ -1,7 +1,7 @@
 import bcrypt from 'bcrypt'
 import dotenv from 'dotenv'
 import jwt from 'jsonwebtoken'
-import Parent from '../models copy/Parent.js'
+import Parent from '../models/Parent.js'
 dotenv.config()
 
 const SECRET = process.env.SECRET

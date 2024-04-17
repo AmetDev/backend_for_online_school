@@ -123,10 +123,7 @@ export const getOurPostsPages = async (req, res) => {
 	try {
 		const { increment } = req.body
 		console.log('increment', increment)
-		// const arrPages = await PageModel.find({
-		// 	pageType: 'post',
-		// 	pageTypePublish: true,
-		// })
+
 		const arrPages = await PageModel.find({
 			pageType: 'post',
 			pageTypePublish: true,
