@@ -13,6 +13,7 @@ const PageModel = new mongoose.Schema(
 		},
 		pageTypePublish: {
 			type: Boolean,
+			default: false,
 			required: true,
 		},
 		pageContent: {

@@ -1,4 +1,3 @@
-import { validationResult } from 'express-validator'
 import PageModel from '../models/Page.js'
 
 export const updateImagePage = async (req, res) => {
@@ -33,11 +32,12 @@ export const deletePageImage = async (req, res) => {
 }
 export const createPage = async (req, res) => {
 	try {
-		const errors = validationResult(req)
+		// const errors = validationResult(req)
 
-		if (!errors.isEmpty()) {
-			return res.status(400).json({ message: errors.array() })
-		}
+		// if (!errors.isEmpty()) {
+		// 	return res.status(400).json({ message: errors.array() })
+		// }
+		// console.log('hello world')
 
 		const {
 			typePage,
@@ -46,6 +46,7 @@ export const createPage = async (req, res) => {
 			pageDate,
 			pageImage,
 			titlePage,
+			Teacher_uuid,
 		} = req.body
 
 		const existingPage = await PageModel.findOne({ pageUrl: URLPage })
@@ -54,20 +55,26 @@ export const createPage = async (req, res) => {
 				.status(400)
 				.json({ message: 'Адрес страницы должен быть уникален' })
 		}
+
+		// const findId = await Teacher.findOne({ email: 'amet1@gmail.com' })
+		// console.log('fined', findId)
+
 		const newPage = new PageModel({
 			pageUrl: URLPage,
 			pageType: typePage,
-			pageTypePublish: pageTypePublish,
+			pageTypePublish: false,
 			pageContent: '',
 			pageImage: pageImage,
 			pageDate: pageDate,
 			pageTitle: titlePage,
+			Teacher_uuid: Teacher_uuid,
 		})
 		const somedate = await newPage.save()
 		console.log(somedate)
 		res.json(req.body)
 	} catch (err) {
 		console.log(err)
+
 		res.status(500).json({
 			message: 'Failed to create page:' + err,
 		})
@@ -108,7 +115,7 @@ export const getOurCollegePagesOne = async (req, res) => {
 	try {
 		const { pageUrl } = req.query
 		const arrPages = await PageModel.findOne({ pageUrl, pageType: 'own' })
-		console.log('fdoifj', arrPages)
+
 		if (null == arrPages) {
 			return res.status(404).json({ message: 'Не удалось найти страницу' })
 		}
@@ -122,7 +129,6 @@ export const getOurCollegePagesOne = async (req, res) => {
 export const getOurPostsPages = async (req, res) => {
 	try {
 		const { increment } = req.body
-		console.log('increment', increment)
 
 		const arrPages = await PageModel.find({
 			pageType: 'post',
@@ -142,10 +148,9 @@ export const updatePageAndToPublic = async (req, res) => {
 	try {
 		const ID = await PageModel.find({ pageUrl: req.body.URLPage })
 		const ID_Obj = { _id: ID[0]._id }
-		console.log('ID', ID_Obj)
 
 		const update = req.body.textValue
-		console.log('update', req.body.titlePage)
+
 		const doc = await PageModel.findOneAndUpdate(
 			{ pageUrl: req.body.URLPage },
 			{
@@ -171,12 +176,8 @@ export const updatePageAndToPublic = async (req, res) => {
 export const getPage = async (req, res) => {
 	try {
 		const pageUrl = req.query.url
-
-		const doc = await PageModel.findOneAndUpdate(
-			{ pageUrl: pageUrl },
-			{ $inc: { viewsCount: 1 } },
-			{ new: true } // Чтобы получить обновленный документ
-		)
+		console.log('pageUrl', pageUrl)
+		const doc = await PageModel.findOne({ pageUrl })
 
 		if (!doc) {
 			return res.status(404).json({
@@ -188,7 +189,7 @@ export const getPage = async (req, res) => {
 	} catch (err) {
 		console.log(err)
 		res.status(500).json({
-			message: 'Failed to create page',
+			message: 'Failed to find page',
 		})
 	}
 }
@@ -196,9 +197,10 @@ export const getPage = async (req, res) => {
 export const deletePage = async (req, res) => {
 	try {
 		const pageUrl = req.query.id
+
 		//console.log(req)
-		//console.log(pageUrl)
-		const page = await PageModel.findByIdAndDelete(pageUrl)
+		console.log('pageUrl', pageUrl)
+		const page = await PageModel.findOneAndRemove(pageUrl)
 		if (!page) {
 			return res.status(404).json({
 				message: 'Страница не найдена',
@@ -209,7 +211,7 @@ export const deletePage = async (req, res) => {
 	} catch (err) {
 		console.log(err)
 		res.status(500).json({
-			message: 'Failed to create page',
+			message: 'Failed to delete page',
 		})
 	}
 }
@@ -217,11 +219,7 @@ export const deletePage = async (req, res) => {
 export const getPageContent = async (req, res) => {
 	try {
 		const pagesDate = req.query.postId
-		const page = await PageModel.findOneAndUpdate(
-			{ pageUrl: pagesDate },
-			{ $inc: { viewsCount: 1 } },
-			{ new: true }
-		)
+		const page = await PageModel.findOne({ pageUrl: pagesDate })
 		res.json({ pageContent: page.pageContent })
 	} catch (error) {
 		console.log(error)

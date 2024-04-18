@@ -7,11 +7,9 @@ import { MongoClient } from 'mongodb'
 import mongoose from 'mongoose'
 import morgan from 'morgan'
 import multer from 'multer'
-import cron from 'node-cron'
 import path from 'path'
 import Image from './models/Image.js'
 import pdfModel from './models/PdfFile.js'
-import mailer from './routes/MailerRoutes.js'
 import pageRouter from './routes/PageRoutes.js'
 
 import routerParent from './routes/ParentRouter.js'
@@ -22,11 +20,8 @@ import checkAuth from './utils/checkAuth.js'
 dotenv.config({ path: './.env' })
 const app = express()
 
-/* CONSTANTS */
 const PORT = process.env.PORT || 5000
 const MONGO_URI = process.env.MONGO_URI
-// const upload = multer({ dest: 'uploads/' })
-/* MIDDLEWARES */
 
 console.log(MONGO_URI)
 
@@ -124,56 +119,11 @@ app.use('/auth_student', StudentRouter)
 app.use('/auth_teacher', TeacherRouter)
 
 app.use('/page', pageRouter)
-app.use('/mailer', mailer)
 
 const client = new MongoClient(MONGO_URI, {
 	useNewUrlParser: true,
 	useUnifiedTopology: true,
 })
-
-async function deleteOldImages(daysThreshold = 365) {
-	try {
-		await client.connect()
-
-		const database = client.db('test')
-		const collection = database.collection('scheduleimages')
-
-		const currentTimestamp = new Date()
-		const thresholdTimestamp = new Date(
-			currentTimestamp - daysThreshold * 24 * 60 * 60 * 1000
-		)
-
-		// Находим все записи, у которых дата загрузки меньше пороговой
-		const oldImages = await collection
-			.find({ upload_date: { $lt: thresholdTimestamp } })
-			.toArray()
-
-		for (const image of oldImages) {
-			const imagePath = image.image_path
-
-			// Удаляем изображение из сервера
-			if (fs.existsSync(imagePath)) {
-				fs.unlinkSync(imagePath)
-			}
-
-			// Удаляем запись из базы данных
-			await collection.deleteOne({ _id: image._id })
-		}
-	} finally {
-		await client.close()
-	}
-}
-
-// Запуск функции удаления старых изображений по расписанию
-cron.schedule(
-	'0 3 * * *',
-	() => {
-		deleteOldImages()
-	},
-	{
-		timezone: 'Europe/Moscow',
-	}
-)
 
 /* START FUNCTION */
 async function start() {

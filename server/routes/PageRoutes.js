@@ -8,7 +8,6 @@ const router = express.Router()
 router.post(
 	'/create',
 	checkAuth,
-
 	// pageValidation,
 	PageControllers.createPage
 )

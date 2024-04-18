@@ -1,7 +1,11 @@
 import mongoose from 'mongoose'
 
-const studentSchema = new mongoose.Schema(
+const testSchema = new mongoose.Schema(
 	{
+		testUrl: {
+			type: String,
+			required: true,
+		},
 		name_test: {
 			type: String,
 			required: true,
@@ -14,6 +18,11 @@ const studentSchema = new mongoose.Schema(
 		question_type: {
 			type: Boolean,
 			default: true,
+		},
+		pageTypePublish: {
+			type: Boolean,
+			default: false,
+			required: true,
 		},
 		imgOrText: {
 			type: String,
@@ -33,4 +42,4 @@ const studentSchema = new mongoose.Schema(
 	{ timestamps: true }
 )
 
-export default mongoose.model('Student', studentSchema)
+export default mongoose.model('Test', testSchema)
