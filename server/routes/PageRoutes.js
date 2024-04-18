@@ -2,25 +2,27 @@ import express from 'express'
 import { ImageLoader } from '../controllers/ImageController.js'
 import { PageControllers } from '../controllers/index.js'
 import checkAuth from '../utils/checkAuth.js'
+import checkUserIsTeacher from '../utils/checkUserIsTeacher.js'
 
 const router = express.Router()
 
 router.post(
 	'/create',
 	checkAuth,
+	checkUserIsTeacher,
 	// pageValidation,
 	PageControllers.createPage
 )
 router.delete(
 	'/removeimage',
 	checkAuth,
-
+	checkUserIsTeacher,
 	PageControllers.deletePageImage
 )
 router.put(
 	'/imagepage',
 	checkAuth,
-
+	checkUserIsTeacher,
 	PageControllers.updateImagePage
 )
 router.post('/uploadimage', checkAuth, ImageLoader)
@@ -29,6 +31,7 @@ router.put(
 	'/topublic',
 	checkAuth,
 
+	checkUserIsTeacher,
 	PageControllers.updatePageAndToPublic
 )
 router.get('/get', PageControllers.getPage)
@@ -42,7 +45,7 @@ router.get('/getpagecontent', PageControllers.getPageContent)
 router.delete(
 	'/delete',
 	checkAuth,
-
+	checkUserIsTeacher,
 	PageControllers.deletePage
 )
 router.get('/getonepage', PageControllers.getOnePage)

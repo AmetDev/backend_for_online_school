@@ -17,6 +17,7 @@ import StudentRouter from './routes/StudentRouter.js'
 import TeacherRouter from './routes/TeacherRouter.js'
 import routerTest from './routes/TestRouter.js'
 import checkAuth from './utils/checkAuth.js'
+import checkUserIsTeacher from './utils/checkUserIsTeacher.js'
 
 dotenv.config({ path: './.env' })
 const app = express()
@@ -58,6 +59,7 @@ app.get('/', (req, res) => {
 app.post(
 	'/uploadpdf',
 	checkAuth,
+	checkUserIsTeacher,
 
 	upload.single('file'),
 	async (req, res) => {
@@ -88,7 +90,7 @@ app.post(
 app.post(
 	'/upload',
 	checkAuth,
-
+	checkUserIsTeacher,
 	upload.single('image'),
 	async (req, res) => {
 		try {
