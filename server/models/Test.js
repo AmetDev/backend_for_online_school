@@ -11,6 +11,19 @@ const testSchema = new mongoose.Schema(
 			required: true,
 		},
 
+		arraysQuestion: {
+			type: Array,
+			required: true,
+		},
+		arraysImg: {
+			type: Array,
+			required: true,
+		},
+		ImgTest: {
+			type: String,
+			required: true,
+		},
+
 		questions_text: {
 			type: String,
 			required: true,
@@ -22,10 +35,6 @@ const testSchema = new mongoose.Schema(
 		pageTypePublish: {
 			type: Boolean,
 			default: false,
-			required: true,
-		},
-		imgOrText: {
-			type: String,
 			required: true,
 		},
 		answer: {

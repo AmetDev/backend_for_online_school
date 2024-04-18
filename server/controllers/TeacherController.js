@@ -29,6 +29,7 @@ export const createTeacher = async (req, res) => {
 			email: req.body.email,
 			gender: req.body.gender,
 			password: hashPassword,
+			isTeacher: false,
 			gender: req.body.gender,
 			dateBirth: req.body.dateBirth,
 		})

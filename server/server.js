@@ -15,6 +15,7 @@ import pageRouter from './routes/PageRoutes.js'
 import routerParent from './routes/ParentRouter.js'
 import StudentRouter from './routes/StudentRouter.js'
 import TeacherRouter from './routes/TeacherRouter.js'
+import routerTest from './routes/TestRouter.js'
 import checkAuth from './utils/checkAuth.js'
 
 dotenv.config({ path: './.env' })
@@ -117,7 +118,7 @@ app.use('/uploads', express.static('uploads'))
 app.use('/auth_parent', routerParent)
 app.use('/auth_student', StudentRouter)
 app.use('/auth_teacher', TeacherRouter)
-
+app.use('/testing', routerTest)
 app.use('/page', pageRouter)
 
 const client = new MongoClient(MONGO_URI, {
