@@ -80,7 +80,14 @@ export const createPage = async (req, res) => {
 		})
 	}
 }
-
+export const getPages = async (req, res) => {
+	try {
+		const result = await PageModel.find().sort({ _id: -1 }).limit(6)
+		return res.status(200).json({ result })
+	} catch (error) {
+		return res.status(500).json({ message: 'ошибка сервера' })
+	}
+}
 export const getOnePage = async (req, res) => {
 	try {
 		const { url } = req.query

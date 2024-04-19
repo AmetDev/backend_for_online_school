@@ -19,6 +19,7 @@ router.delete(
 	checkUserIsTeacher,
 	PageControllers.deletePageImage
 )
+router.get('/pages', PageControllers.getPages)
 router.put(
 	'/imagepage',
 	checkAuth,
