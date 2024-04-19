@@ -32,6 +32,7 @@ export const createTeacher = async (req, res) => {
 			isTeacher: false,
 			gender: req.body.gender,
 			dateBirth: req.body.dateBirth,
+			typeUser: 'teacher',
 		})
 
 		const user = await doc.save()

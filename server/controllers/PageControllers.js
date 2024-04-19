@@ -147,7 +147,8 @@ export const getOurPostsPages = async (req, res) => {
 export const updatePageAndToPublic = async (req, res) => {
 	try {
 		const ID = await PageModel.find({ pageUrl: req.body.URLPage })
-		const ID_Obj = { _id: ID[0]._id }
+		//const ID_Obj = { _id: ID[0]._id }
+		console.log('req.body.URLPage', req.body.URLPage)
 
 		const update = req.body.textValue
 
@@ -156,7 +157,6 @@ export const updatePageAndToPublic = async (req, res) => {
 			{
 				pageContent: update,
 				pageTypePublish: true,
-				pageTitle: req.body.titlePage,
 			}
 		)
 

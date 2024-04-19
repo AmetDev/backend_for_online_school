@@ -17,6 +17,10 @@ const teacherSchema = new mongoose.Schema(
 			default: false,
 			required: true,
 		},
+		typeUser: {
+			type: String,
+			required: true,
+		},
 		gender: {
 			type: Boolean,
 			default: true,

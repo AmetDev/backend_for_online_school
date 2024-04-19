@@ -38,6 +38,7 @@ export const createStudent = async (req, res) => {
 			dateBirth: req.body.dateBirth,
 			Teacher_uuid: req.body.Teacher_uuid,
 			Parent_uuid: req.body.Parent_uuid,
+			typeUser: 'student',
 		})
 
 		const user = await doc.save()

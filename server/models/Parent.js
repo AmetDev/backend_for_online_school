@@ -20,6 +20,10 @@ const parentSchema = new mongoose.Schema(
 			type: String,
 			required: true,
 		},
+		typeUser: {
+			type: String,
+			required: true,
+		},
 		dateBirth: {
 			type: Date,
 			required: true,

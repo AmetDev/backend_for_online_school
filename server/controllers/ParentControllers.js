@@ -37,6 +37,7 @@ export const createParent = async (req, res) => {
 			gender: req.body.gender,
 			dateBirth: req.body.dateBirth,
 			student_uuid: req.body.student_uuid,
+			typeUser: 'parent',
 		})
 
 		const user = await doc.save()
@@ -66,6 +67,7 @@ export const loginParent = async (req, res) => {
 		// if (!errors.isEmpty()) {
 		// 	return res.status(400).json({ message: errors.array() })
 		// }
+		console.log('req.body.email', req.body.email)
 		const user = await Parent.findOne({ email: req.body.email })
 
 		if (!user) {
