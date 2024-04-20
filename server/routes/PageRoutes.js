@@ -44,18 +44,11 @@ router.get('/getpagecontent', PageControllers.getPageContent)
 
 //router.get('/getonepage', PageControllers.getOnePage)
 router.delete(
-	'/delete',
+	'/pageone',
 	checkAuth,
 	checkUserIsTeacher,
 	PageControllers.deletePage
 )
 router.get('/getonepage', PageControllers.getOnePage)
-// router.get(
-// 	'/update',
-// 	checkAuth,
-// 	checkUserIsAdmin,
-// 	updatePageValidation,
-// 	PageControllers.updatePage
-// )
 
 export default router

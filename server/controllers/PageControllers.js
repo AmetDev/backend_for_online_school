@@ -82,7 +82,17 @@ export const createPage = async (req, res) => {
 }
 export const getPages = async (req, res) => {
 	try {
-		const result = await PageModel.find().sort({ _id: -1 }).limit(6)
+		console.log('req.query.increment', req.query.increment)
+		const result = await PageModel.find()
+			.sort({ _id: -1 })
+
+			.exec()
+			.then(result => {
+				return result
+			})
+			.catch(err => {
+				console.error(err)
+			})
 		return res.status(200).json({ result })
 	} catch (error) {
 		return res.status(500).json({ message: 'ошибка сервера' })
@@ -95,14 +105,12 @@ export const getOnePage = async (req, res) => {
 		console.log(req.params)
 		console.log('fdfsdfsdfs')
 
-		let wordWithoutSlash = url.substring(1)
-
-		const result = await PageModel.findOne({ pageUrl: wordWithoutSlash })
+		const result = await PageModel.findOne({ pageUrl: url })
 		if (result == null) {
 			return res.status(404).json({ message: 'объект не был найден' })
 		} else {
 			console.log(result)
-			return res.status(200).json({ message: result })
+			return res.status(200).json({ result })
 		}
 	} catch (error) {
 		return res.status(500).json({ message: 'ошибка сервера' })
@@ -205,7 +213,6 @@ export const deletePage = async (req, res) => {
 	try {
 		const pageUrl = req.query.id
 
-		//console.log(req)
 		console.log('pageUrl', pageUrl)
 		const page = await PageModel.findOneAndRemove(pageUrl)
 		if (!page) {

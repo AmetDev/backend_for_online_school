@@ -10,7 +10,7 @@ export default async (req, res, next) => {
 
 			const user = await Teacher.findById(decoded)
 
-			if (user.isTeacher) {
+			if (user.isTeacher === true) {
 				return next()
 			}
 
