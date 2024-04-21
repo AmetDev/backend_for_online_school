@@ -6,6 +6,34 @@ dotenv.config()
 
 const SECRET = process.env.SECRET
 
+export const updateStudent = async (req, res) => {
+	try {
+		console.log(req.body)
+
+		// Проверяем, существует ли студент с указанной почтой
+		const existingStudent = await Student.findOne({ email: req.body.email })
+
+		if (!existingStudent) {
+			return res.status(404).json({ message: 'Студент не найден' })
+		}
+
+		// Обновляем Teacher_uuid для существующего студента
+		existingStudent.Teacher_uuid = req.body.Teacher_uuid
+		existingStudent.typeUser = 'student'
+		await existingStudent.save()
+
+		const userData = existingStudent._doc
+
+		res.status(200).json({ ...userData })
+	} catch (err) {
+		console.error(err)
+		res.status(500).json({
+			message: 'Ошибка при обновлении студента',
+			error: err,
+		})
+	}
+}
+
 export const createStudent = async (req, res) => {
 	try {
 		console.log(req.body)
@@ -112,5 +140,27 @@ export const getStudent = async (req, res) => {
 		res.status(500).send({
 			message: 'Не удалось получить пользователя',
 		})
+	}
+}
+
+export const getAllStudents = async (req, res) => {
+	try {
+		const { Teacher_uuid } = req.query
+
+		// Проверьте наличие Teacher_uuid в запросе
+		if (!Teacher_uuid) {
+			return res.status(400).json({ message: 'Не указан Teacher_uuid' })
+		}
+
+		// Найдите всех студентов, которые соответствуют указанному Teacher_uuid
+		const allStudents = await Student.find({ Teacher_uuid })
+
+		if (!allStudents || allStudents.length === 0) {
+			return res.status(404).json({ message: 'Студенты не найдены' })
+		}
+
+		res.status(200).json([allStudents])
+	} catch (error) {
+		res.status(500).json({ message: 'Ошибка при получении студентов', error })
 	}
 }

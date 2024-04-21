@@ -1,6 +1,7 @@
 import express from 'express'
 import { StudentController } from '../controllers/index.js'
 import checkAuth from '../utils/checkAuth.js'
+import checkUserIsTeacher from '../utils/checkUserIsTeacher.js'
 import {
 	loginStudentValidation,
 	registerStudentValidation,
@@ -17,5 +18,12 @@ StudentRouter.post(
 	loginStudentValidation,
 	StudentController.loginStudent
 )
+StudentRouter.put('/student', checkAuth, StudentController.updateStudent)
 StudentRouter.get('/me', checkAuth, StudentController.getStudent)
 export default StudentRouter
+StudentRouter.get(
+	'/students',
+	checkAuth,
+	checkUserIsTeacher,
+	StudentController.getAllStudents
+)
