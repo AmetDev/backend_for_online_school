@@ -19,6 +19,11 @@ StudentRouter.post(
 	StudentController.loginStudent
 )
 StudentRouter.put('/student', checkAuth, StudentController.updateStudent)
+StudentRouter.put(
+	'/studentparent',
+	checkAuth,
+	StudentController.updateStudentParent
+)
 StudentRouter.get('/me', checkAuth, StudentController.getStudent)
 export default StudentRouter
 StudentRouter.get(

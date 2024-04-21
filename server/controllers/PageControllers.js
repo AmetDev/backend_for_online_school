@@ -82,8 +82,29 @@ export const createPage = async (req, res) => {
 }
 export const getPages = async (req, res) => {
 	try {
+		const result = await PageModel.find({
+			Teacher_uuid: req.query.Teacher_uuid,
+		})
+			.sort({ _id: -1 })
+
+			.exec()
+			.then(result => {
+				return result
+			})
+			.catch(err => {
+				console.error(err)
+			})
+		return res.status(200).json({ result })
+	} catch (error) {
+		return res.status(500).json({ message: 'ошибка сервера' })
+	}
+}
+export const getPagesForStudent = async (req, res) => {
+	try {
 		console.log('req.query.increment', req.query.increment)
-		const result = await PageModel.find()
+		const result = await PageModel.find({
+			Teacher_uuid: req.query.Teacher_uuid,
+		})
 			.sort({ _id: -1 })
 
 			.exec()
@@ -101,11 +122,13 @@ export const getPages = async (req, res) => {
 export const getOnePage = async (req, res) => {
 	try {
 		const { url } = req.query
-		console.log('qiuet', req.query)
-		console.log(req.params)
-		console.log('fdfsdfsdfs')
 
-		const result = await PageModel.findOne({ pageUrl: url })
+		console.log('fdfsdfsdfs', req.query)
+
+		const result = await PageModel.findOne({
+			pageUrl: url,
+			Teacher_uuid: req.query.Teacher_uuid,
+		})
 		if (result == null) {
 			return res.status(404).json({ message: 'объект не был найден' })
 		} else {
@@ -172,6 +195,7 @@ export const updatePageAndToPublic = async (req, res) => {
 			{
 				pageContent: update,
 				pageTypePublish: true,
+				Teacher_uuid: req.userId,
 			}
 		)
 

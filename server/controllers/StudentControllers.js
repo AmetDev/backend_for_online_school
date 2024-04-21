@@ -33,6 +33,33 @@ export const updateStudent = async (req, res) => {
 		})
 	}
 }
+export const updateStudentParent = async (req, res) => {
+	try {
+		console.log(req.body)
+
+		// Проверяем, существует ли студент с указанной почтой
+		const existingStudent = await Student.findOne({ email: req.body.email })
+
+		if (!existingStudent) {
+			return res.status(404).json({ message: 'Студент не найден' })
+		}
+
+		// Обновляем Teacher_uuid для существующего студента
+		existingStudent.Parent_uuid = req.body.Parent_uuid
+		existingStudent.typeUser = 'student'
+		await existingStudent.save()
+
+		const userData = existingStudent._doc
+
+		res.status(200).json({ ...userData })
+	} catch (err) {
+		console.error(err)
+		res.status(500).json({
+			message: 'Ошибка при обновлении студента',
+			error: err,
+		})
+	}
+}
 
 export const createStudent = async (req, res) => {
 	try {

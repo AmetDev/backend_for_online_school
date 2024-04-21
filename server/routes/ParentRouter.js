@@ -14,4 +14,6 @@ routerParent.post(
 )
 routerParent.post('/login', loginParentValidation, ParentController.loginParent)
 routerParent.get('/me', checkAuth, ParentController.getParent)
+routerParent.get('/getparent', ParentController.getParentStudent)
+routerParent.get('/parentuser', ParentController.getParentStudent)
 export default routerParent

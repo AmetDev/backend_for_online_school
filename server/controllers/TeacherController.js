@@ -108,3 +108,22 @@ export const getTeacher = async (req, res) => {
 		})
 	}
 }
+
+export const getTeacherWithUUID = async (req, res) => {
+	try {
+		// Ищем учителя по Teacher_uuid из запроса
+		const teacher = await Teacher.findById(req.query.Teacher_uuid)
+
+		// Проверяем, найден ли учитель
+		if (!teacher) {
+			return res.status(404).json({ message: 'Учитель не найден' })
+		}
+
+		// Возвращаем найденного учителя
+		res.status(200).json(teacher)
+	} catch (error) {
+		// Обрабатываем ошибку
+		console.error(error)
+		res.status(500).json({ message: 'Произошла ошибка при поиске учителя' })
+	}
+}

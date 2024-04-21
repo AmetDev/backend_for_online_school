@@ -114,3 +114,39 @@ export const getParent = async (req, res) => {
 		})
 	}
 }
+export const getParentStudent = async (req, res) => {
+	try {
+		const user = await Parent.findById(req.query.Parent_uuid)
+		if (!user) {
+			return res.status(404).send({
+				message: 'Пользователь не найден',
+			})
+		}
+		const { password, ...userData } = user._doc
+		res.json(userData)
+	} catch (error) {
+		console.log(error)
+		res.status(500).send({
+			message: 'Не удалось получить пользователя',
+		})
+	}
+}
+
+export const getParentWithUUID = async (req, res) => {
+	try {
+		// Ищем учителя по Teacher_uuid из запроса
+		const teacher = await Teacher.findById(req.query.Teacher_uuid)
+
+		// Проверяем, найден ли учитель
+		if (!teacher) {
+			return res.status(404).json({ message: 'Учитель не найден' })
+		}
+
+		// Возвращаем найденного учителя
+		res.status(200).json(teacher)
+	} catch (error) {
+		// Обрабатываем ошибку
+		console.error(error)
+		res.status(500).json({ message: 'Произошла ошибка при поиске учителя' })
+	}
+}

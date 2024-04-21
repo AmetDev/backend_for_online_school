@@ -16,4 +16,6 @@ TeacherRouter.post(
 	TeacherController.loginTeacher
 )
 TeacherRouter.get('/me', checkAuth, TeacherController.getTeacher)
+
+TeacherRouter.get('/teacherforstudent', TeacherController.getTeacherWithUUID)
 export default TeacherRouter
