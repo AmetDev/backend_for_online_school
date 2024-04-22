@@ -54,7 +54,8 @@ const upload = multer({ storage: storage })
 
 // Serve the HTML page with a form for image upload
 app.get('/', (req, res) => {
-	res.sendFile(path.join(__dirname, 'index.html'))
+	res.status(200).send('hello world!')
+	//res.sendFile(path.join(__dirname, 'index.html'))
 })
 app.post(
 	'/uploadpdf',
