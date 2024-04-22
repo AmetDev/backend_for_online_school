@@ -191,3 +191,15 @@ export const getAllStudents = async (req, res) => {
 		res.status(500).json({ message: 'Ошибка при получении студентов', error })
 	}
 }
+export const getAllStudentParent = async (req, res) => {
+	try {
+		const { Parent_uuid } = req.query
+		if (!Parent_uuid) {
+			return res.status(400).json({ message: 'Не указан Parent_uuid' })
+		}
+		const allStudents = await Student.find({ Parent_uuid })
+		res.status(200).json([allStudents])
+	} catch (error) {
+		res.status(500).json({ message: 'Ошибка при получении студентов', error })
+	}
+}

@@ -25,6 +25,7 @@ StudentRouter.put(
 	StudentController.updateStudentParent
 )
 StudentRouter.get('/me', checkAuth, StudentController.getStudent)
+StudentRouter.get('/studentforparent', StudentController.getAllStudentParent)
 export default StudentRouter
 StudentRouter.get(
 	'/students',
