@@ -15,6 +15,7 @@ import pageRouter from './routes/PageRoutes.js'
 import routerParent from './routes/ParentRouter.js'
 import StudentRouter from './routes/StudentRouter.js'
 import TeacherRouter from './routes/TeacherRouter.js'
+import routerTestResult from './routes/TestResultRouter.js'
 import routerTest from './routes/TestRouter.js'
 import checkAuth from './utils/checkAuth.js'
 import checkUserIsTeacher from './utils/checkUserIsTeacher.js'
@@ -123,7 +124,7 @@ app.use('/auth_student', StudentRouter)
 app.use('/auth_teacher', TeacherRouter)
 app.use('/testing', routerTest)
 app.use('/page', pageRouter)
-
+app.use('/testing', routerTestResult)
 const client = new MongoClient(MONGO_URI, {
 	useNewUrlParser: true,
 	useUnifiedTopology: true,

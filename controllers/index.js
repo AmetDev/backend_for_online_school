@@ -1,5 +1,6 @@
 export * as TestController from '../controllers/TestController.js'
 export * as PageControllers from './PageControllers.js'
 export * as ParentController from './ParentControllers.js'
+export * as ResultTestController from './ResultTestController.js'
 export * as StudentController from './StudentControllers.js'
 export * as TeacherController from './TeacherController.js'
