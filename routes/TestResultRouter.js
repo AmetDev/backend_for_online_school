@@ -12,5 +12,14 @@ routerTestResult.get(
 	checkAuth,
 	ResultTestController.getResultByUUIDs
 )
+routerTestResult.get(
+	'/all_tests',
+	checkAuth,
+	ResultTestController.getAllResultStudents
+)
+routerTestResult.get(
+	'/all_tests_teacher',
+	checkAuth,
+	ResultTestController.getAllResultStudentsTeacher
+)
 export default routerTestResult
-routerTestResult.get("/all_tests", checkAuth, ResultTestController.getAllResultStudents)

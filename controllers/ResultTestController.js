@@ -60,22 +60,34 @@ export const getResultByUUIDs = async (req, res) => {
 	}
 }
 export const getAllResultStudents = async (req, res) => {
-  try {
-    const {userId} =req
-    const userIdStudent  = await Student.findOne({
-      Parent_uuid: userId
-    })
-    if(userIdStudent)
-  {
-      console.log(userIdStudent)
-    }
-    const result = await ResultTest.find({
-      Student_uuid: userIdStudent._id
-    })
-    console.log(result)
-    return res.status(200).json({result})
-  } catch (error) {
-   console.log(error)
-    return res.status(500).json({message:error})
-  }
+	try {
+		const { userId } = req
+		const userIdStudent = await Student.findOne({
+			Parent_uuid: userId,
+		})
+		if (userIdStudent) {
+			console.log(userIdStudent)
+		}
+		const result = await ResultTest.find({
+			Student_uuid: userIdStudent._id,
+		})
+		console.log(result)
+		return res.status(200).json({ result })
+	} catch (error) {
+		console.log(error)
+		return res.status(500).json({ message: error })
+	}
+}
+export const getAllResultStudentsTeacher = async (req, res) => {
+	try {
+		const { Student_uuid } = req.query
+		const result = await ResultTest.find({
+			Student_uuid,
+		})
+		console.log(result)
+		return res.status(200).json({ result })
+	} catch (error) {
+		console.log(error)
+		return res.status(500).json({ message: error })
+	}
 }
