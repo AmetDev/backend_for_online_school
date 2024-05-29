@@ -1,4 +1,5 @@
 import ResultTest from '../models/ResultTest.js'
+import Student from '../models/Student.js'
 
 export const setResultTest = async (req, res) => {
 	try {
@@ -57,4 +58,24 @@ export const getResultByUUIDs = async (req, res) => {
 		// Send an error response
 		res.status(500).json({ message: 'Failed to get result', error })
 	}
+}
+export const getAllResultStudents = async (req, res) => {
+  try {
+    const {userId} =req
+    const userIdStudent  = await Student.findOne({
+      Parent_uuid: userId
+    })
+    if(userIdStudent)
+  {
+      console.log(userIdStudent)
+    }
+    const result = await ResultTest.find({
+      Student_uuid: userIdStudent._id
+    })
+    console.log(result)
+    return res.status(200).json({result})
+  } catch (error) {
+   console.log(error)
+    return res.status(500).json({message:error})
+  }
 }

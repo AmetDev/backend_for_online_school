@@ -13,3 +13,4 @@ routerTestResult.get(
 	ResultTestController.getResultByUUIDs
 )
 export default routerTestResult
+routerTestResult.get("/all_tests", checkAuth, ResultTestController.getAllResultStudents)
