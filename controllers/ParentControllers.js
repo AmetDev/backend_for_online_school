@@ -117,6 +117,7 @@ export const getParent = async (req, res) => {
 export const getParentStudent = async (req, res) => {
 	try {
 		const user = await Parent.findById(req.query.Parent_uuid)
+		console.log('req.query.Parent_uuid', req.query.Parent_uuid)
 		if (!user) {
 			return res.status(404).send({
 				message: 'Пользователь не найден',
